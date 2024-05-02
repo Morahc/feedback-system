@@ -1,20 +1,18 @@
-import { Router } from 'express';
-import { validate } from '../middleware';
-import { login, logout, register } from '../controllers/stateless.controller';
-import { loginUserSchema, createUserSchema } from '../schemas/auth.schema';
-import passport from '../config/passport';
+import { Router } from "express";
+import { requireAuth, validate } from "../middleware";
+import { login, logout, register } from "../controllers/auth.controller";
+import { loginUserSchema, createUserSchema } from "../schemas/auth.schema";
 
 const router = Router();
 
-router.post('/register', validate(createUserSchema), register);
+router.post("/register", validate(createUserSchema), register);
 
-router.post(
-  '/login',
-  validate(loginUserSchema),
-  passport.authenticate('local', { failureRedirect: '/login' }),
-  login
-);
+router.post("/login", validate(loginUserSchema), login);
 
-router.post('/logout', logout);
+router.post("/protected", requireAuth, (req, res) => {
+  res.json({ user: req.user });
+});
+
+router.post("/logout", logout);
 
 export default router;

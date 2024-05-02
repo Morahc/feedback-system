@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { HttpException, NotFoundException } from '../exceptions';
 
 export const errorMiddleware = (err: Error, req: Request, res: Response, next: NextFunction) => {
+  console.log(err)
   if (err instanceof HttpException) {
     res.status(err.statusCode).json({
       name: err.name,

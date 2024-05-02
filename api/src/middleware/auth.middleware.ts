@@ -7,8 +7,8 @@ export const deserializeUser = async (req: Request, res: Response, next: NextFun
     let accessToken;
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
       accessToken = req.headers.authorization.split(' ')[1];
-    } else if (req.cookies['x-access-token']) {
-      accessToken = req.cookies['x-access-token'];
+    } else if (req.cookies['access-token']) {
+      accessToken = req.cookies['access-token'];
     }
 
     if (!accessToken) return next();

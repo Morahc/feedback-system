@@ -1,20 +1,19 @@
 import express from 'express';
-import router from './routes';
+import morgan from 'morgan'
 import cookieParser from 'cookie-parser';
+import 'dotenv/config';
 
 import database from './config/database';
-import passport from './config/passport';
-import 'dotenv/config';
+import router from './routes';
 import { deserializeUser, errorMiddleware, notFound } from './middleware';
 
 const app = express();
 
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(deserializeUser);
+if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 
 app.use('/api/v1', router);
 
