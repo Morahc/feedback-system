@@ -4,20 +4,23 @@ import argon from "argon2";
 export interface User {
   email: string;
   password: string;
-  fullname: string;
+  firstname: string;
+  lastname: string;
 }
 
 interface UserMethods {
   matchPassword(password: string): Promise<boolean>;
+  profile(): { fullname: string };
 }
 
 type UserModel = Model<User, object, UserMethods>;
 
 const userSchema = new Schema<User, UserModel, UserMethods>(
   {
+    firstname: { type: String, required: true },
+    lastname: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String },
-    fullname: { type: String, required: true },
   },
   {
     timestamps: true,
@@ -31,6 +34,12 @@ userSchema.pre("save", async function (next) {
 
   this.password = await argon.hash(this.password);
 });
+
+userSchema.methods.profile = function () {
+  return {
+    fullname: `${this.lastname} ${this.firstname}`,
+  };
+};
 
 userSchema.methods.matchPassword = async function (password: string): Promise<boolean> {
   return await argon.verify(this.password, password);

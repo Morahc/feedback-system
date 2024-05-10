@@ -6,12 +6,11 @@ export const validate =
     try {
       await schema.parseAsync({
         body: req.body,
-        query: req.query,
-        params: req.params,
       });
       return next();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
+      console.log(error)
       return res.status(400).json(
         error.issues.map((i: { message: string; path: string[] }) => {
           return { message: i.message, path: i.path[1] };

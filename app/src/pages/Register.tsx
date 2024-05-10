@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { useAuthContext } from "@/context/authContext";
 
 const formSchema = z.object({
   firstname: z.string().min(1, {
@@ -39,16 +40,24 @@ const Register = () => {
     },
   });
 
+  const navigate = useNavigate();
+  const { register, loading } = useAuthContext();
+
   function onSubmit(formData: z.infer<typeof formSchema>) {
-    console.log(formData);
+    register(formData, navigate);
   }
 
   return (
-    <main className="h-screen flex">
-      <div className="container flex-col justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-        <div className="flex flex-col gap-6 justify-center items-center">
-          <div className="border shadow rounded p-2 md:p-4 flex w-full flex-col space-y-8  lg:w-[500px]">
-            <h1 className="text-3xl font-semibold tracking-tight text-center">Create an account</h1>
+    <section className="h-screen flex">
+      <div className="bg-[url(./register-bg.svg)] container lg:grid lg:grid-cols-2 place-content-center lg:place-content-stretch lg:max-w-none lg:px-0">
+        <div className="grid place-items-center bg-white">
+          <div className="border shadow-lg p-3 lg:px-6 lg:py-8 flex w-full flex-col space-y-8 lg:w-[500px]">
+            <div className="flex flex-col space-y-2 text-center">
+              <h1 className="text-4xl font-semibold tracking-tight text-center text-secondary">
+                Create an account
+              </h1>
+              <p className="text-sm text-muted-foreground">Input the appropriate credentials</p>
+            </div>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
@@ -108,7 +117,11 @@ const Register = () => {
                     </FormItem>
                   )}
                 />
-                <Button className="w-full rounded capitalize bg-black" type="submit">
+                <Button
+                  disabled={loading}
+                  className="w-full rounded capitalize bg-secondary"
+                  type="submit"
+                >
                   Continue
                 </Button>
               </form>
@@ -121,9 +134,8 @@ const Register = () => {
             </div>
           </div>
         </div>
-        <div className="col-span-1">334</div>
       </div>
-    </main>
+    </section>
   );
 };
 

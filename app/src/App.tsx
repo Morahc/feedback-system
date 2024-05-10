@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Reviews from "./pages/Reviews";
+import { PrivateRoutes } from "./components/privateRoutes";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,11 @@ const router = createBrowserRouter([
   },
   {
     path: "reviews",
-    element: <Reviews />,
+    element: (
+      <PrivateRoutes>
+        <Reviews />
+      </PrivateRoutes>
+    ),
   },
 ]);
 

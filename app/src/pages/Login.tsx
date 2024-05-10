@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { useAuthContext } from "@/context/authContext";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -31,17 +32,20 @@ const Login = () => {
     },
   });
 
+  const navigate = useNavigate();
+  const { login, loading } = useAuthContext();
+
   function onSubmit(formData: z.infer<typeof formSchema>) {
-    console.log(formData);
+    login(formData, navigate);
   }
 
   return (
-    <main className="h-screen flex">
-      <div className="container flex-col justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-        <div className="flex flex-col gap-6 justify-center items-center">
-          <div className="border shadow rounded p-6 flex w-full flex-col space-y-8 lg:w-[500px]">
-            <div className="flex flex-col space-y-2">
-              <h1 className="text-4xl font-semibold">Welcome back</h1>
+    <section className="h-screen flex">
+      <div className="bg-[url(./large-triangles.svg)] container lg:grid lg:grid-cols-2 place-content-center lg:place-content-stretch lg:max-w-none lg:px-0">
+        <div className="grid place-items-center bg-white">
+          <div className="border shadow-lg p-4 lg:px-6 lg:py-8 flex w-full flex-col space-y-8 lg:w-[500px]">
+            <div className="flex flex-col space-y-2 text-center">
+              <h1 className="text-4xl font-semibold text-primary">Welcome back</h1>
               <p className="text-sm text-muted-foreground">
                 Enter the information you entered while registering
               </p>
@@ -76,7 +80,7 @@ const Login = () => {
                     )}
                   />
                 </div>
-                <Button className="rounded w-full capitalize bg-black" type="submit">
+                <Button disabled={loading} className="rounded w-full capitalize" type="submit">
                   Continue
                 </Button>
               </form>
@@ -90,7 +94,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-    </main>
+    </section>
   );
 };
 

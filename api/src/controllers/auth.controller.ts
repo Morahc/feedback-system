@@ -17,7 +17,7 @@ export const register = async (
   try {
     const user = await CreateUser(req.body);
 
-    return res.status(201).json(user);
+    return res.status(201);
   } catch (error) {
     return next(error);
   }
@@ -44,7 +44,7 @@ export const login = async (
         ...cookieOptions,
         maxAge: 60 * 60 * 1000,
       })
-      .json({ accessToken });
+      .json({ accessToken, user: user.profile() });
   } catch (error) {
     next(error);
   }
