@@ -16,7 +16,7 @@ const Home = () => {
           </p>
 
           <div className="mt-8 grid grid-cols-2 gap-4">
-            <Link to="/reviews" className="">
+            <Link to="/register" className="">
               <Button className="text-md w-full">Get Started</Button>
             </Link>
             <Link to="/login">

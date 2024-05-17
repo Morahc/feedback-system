@@ -10,7 +10,7 @@ export interface User {
 
 interface UserMethods {
   matchPassword(password: string): Promise<boolean>;
-  profile(): { fullname: string };
+  profile(): { firstname: string, email: string };
 }
 
 type UserModel = Model<User, object, UserMethods>;
@@ -37,7 +37,8 @@ userSchema.pre("save", async function (next) {
 
 userSchema.methods.profile = function () {
   return {
-    fullname: `${this.lastname} ${this.firstname}`,
+    firstname: this.firstname,
+    email: this.email
   };
 };
 

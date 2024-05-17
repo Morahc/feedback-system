@@ -12,7 +12,7 @@ type AuthContextProps = {
 
 type User = {
   _id: string;
-  fullname: string;
+  firstname: string;
   email: string;
 };
 
@@ -52,10 +52,12 @@ const AuthProvider = ({ children }: AuthContextProps) => {
   const register = async (formData: registerInput, navigate: NavigateFunction) => {
     setLoading(true);
     try {
-      await api.register(formData);
-      navigate("/login");
+      const { data } = await api.register(formData);
 
-      toast.success("Registration successful");
+      if (data.success) {
+        navigate("/login");
+        toast.success("Registration successful");
+      }
     } catch (error: any) {
       const err =
         (error.response && error.response.data && error.response.data.message) ||

@@ -40,7 +40,7 @@ const Reviews = () => {
   });
 
   const { createReviews, loading } = useReviewContext();
-  const { logout } = useAuthContext()
+  const { logout, user } = useAuthContext()
 
   function onSubmit(formData: z.infer<typeof formSchema>) {
     createReviews(formData);
@@ -50,7 +50,7 @@ const Reviews = () => {
   return (
     <main className="h-screen">
       <div className="bg-secondary p-4 lg:p-12 flex items-center justify-between">
-        <h1 className="text-2xl lg:text-5xl text-white">Write a review</h1>
+        <h1 className="text-2xl lg:text-4xl text-white">Hello {user?.firstname}, Write a review</h1>
         <Button className="border-secondary text-secondary text-md" variant={"outline"}
         onClick={logout}
         >

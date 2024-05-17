@@ -15,9 +15,9 @@ export const register = async (
   next: NextFunction
 ) => {
   try {
-    const user = await CreateUser(req.body);
+    await CreateUser(req.body);
 
-    return res.status(201);
+    return res.status(201).json({ success: true });
   } catch (error) {
     return next(error);
   }
